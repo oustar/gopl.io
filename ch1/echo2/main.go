@@ -5,6 +5,7 @@
 //!+
 
 // Echo2 prints its command-line arguments.
+
 package main
 
 import (
@@ -13,10 +14,11 @@ import (
 )
 
 func main() {
-	s, sep := "", ""
+	s, seq := "", ""
+
 	for _, arg := range os.Args[1:] {
-		s += sep + arg
-		sep = " "
+		s += seq + arg
+		seq = " "
 	}
 	fmt.Println(s)
 }
