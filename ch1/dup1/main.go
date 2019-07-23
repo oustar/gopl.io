@@ -9,15 +9,14 @@
 
 package main
 
-import (
-	"bufio"
-	"fmt"
-	"os"
-)
+import "bufio"
+import "fmt"
+import "os"
 
 func main() {
 	counts := make(map[string]int)
 	input := bufio.NewScanner(os.Stdin)
+
 	for input.Scan() {
 		counts[input.Text()]++
 	}
