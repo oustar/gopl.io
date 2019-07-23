@@ -12,11 +12,21 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 )
 
 func main() {
 
-	fmt.Println(strings.Join(os.Args[1:], " "))
+	start := time.Now()
+	fmt.Println(strings.Join(os.Args[:], " "))
+	fmt.Printf("%.2fs elapsed!", time.Since(start).Seconds())
 }
 
+// exercise 1.2
+/* func main() {
+	for i, arg := range os.Args[1:] {
+		fmt.Printf("%d\t%s\n", i, arg)
+	}
+}
+*/
 //!-
