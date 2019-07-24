@@ -6,12 +6,13 @@
 
 // Dup1 prints the text of each line that appears more than
 // once in the standard input, preceded by its count.
-
 package main
 
-import "bufio"
-import "fmt"
-import "os"
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
 
 func main() {
 	counts := make(map[string]int)
@@ -21,10 +22,8 @@ func main() {
 		counts[input.Text()]++
 	}
 
-	for line, n := range counts {
-		if n > 1 {
-			fmt.Printf("%d\t%s\n", n, line)
-		}
+	for line, i := range counts {
+		fmt.Printf("%d\t%s\n", i, line)
 	}
 }
 
