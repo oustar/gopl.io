@@ -9,10 +9,10 @@ package main
 
 import (
 	"fmt"
+	"gopl.io/ch4/github"
 	"log"
 	"os"
-
-	"gopl.io/ch4/github"
+	"time"
 )
 
 //!+
@@ -21,11 +21,35 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%d issues:\n", result.TotalCount)
-	for _, item := range result.Items {
-		fmt.Printf("#%-5d %9.9s %.55s\n",
-			item.Number, item.User.Login, item.Title)
+
+	now := time.Now()
+	month := 30 * 24 * time.Hour
+	year := 356 * 24 * time.Hour
+
+	var cat [3][]int
+	for i, item := range result.Items {
+		d := now.Sub(item.CreatedAt)
+		if d < month {
+			cat[0] = append(cat[0], i)
+		} else if d < year {
+			cat[1] = append(cat[1], i)
+		} else {
+			cat[2] = append(cat[2], i)
+		}
 	}
+
+	fmt.Printf("%d issues:\n", result.TotalCount)
+	for i := 0; i < 3; i++ {
+		fmt.Printf("%d issues:\n", len(cat[i]))
+		for _, n := range cat[i] {
+
+			fmt.Printf("#%-5d %9.9s %.55s\n",
+				result.Items[n].Number, result.Items[n].CreatedAt, result.Items[n].Title)
+
+		}
+
+	}
+
 }
 
 //!-
