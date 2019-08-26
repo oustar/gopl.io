@@ -11,11 +11,28 @@ import (
 	"fmt"
 	"gopl.io/ch4/github"
 	"log"
-	"os"
-	"time"
+	_ "os"
+	_ "time"
 )
 
-//!+
+func main() {
+
+	var q = []string{"repo:golang/go", "is:open", "json", "decoder"}
+	result, err := github.SearchIssuesEx(q, "created", "desc")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("%d issues:\n", result.TotalCount)
+	for _, item := range result.Items {
+
+		fmt.Printf("#%-5d %9.9s %.55s\n",
+			item.Number, item.CreatedAt, item.Title)
+
+	}
+}
+
+/*
 func main() {
 	result, err := github.SearchIssues(os.Args[1:])
 	if err != nil {
@@ -52,7 +69,6 @@ func main() {
 
 }
 
-//!-
 
 /*
 //!+textoutput

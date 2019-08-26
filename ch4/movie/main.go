@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-//!+
+// Movie is the struct of movie
 type Movie struct {
 	Title  string
 	Year   int  `json:"released"`
@@ -52,6 +52,11 @@ func main() {
 		fmt.Printf("%s\n", data)
 		//!-MarshalIndent
 
+		var movies1 []Movie
+		if err := json.Unmarshal(data, &movies1); err != nil {
+			log.Fatalf("JSON unmarshaling failed: %s", err)
+		}
+		fmt.Println(movies1)
 		//!+Unmarshal
 		var titles []struct{ Title string }
 		if err := json.Unmarshal(data, &titles); err != nil {

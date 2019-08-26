@@ -12,7 +12,7 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"strings"
+	_ "strings"
 )
 
 func main() {
@@ -20,9 +20,9 @@ func main() {
 		httpPrefix = "http://"
 	)
 	for _, url := range os.Args[1:] {
-		if !strings.HasPrefix(url, httpPrefix) {
-			url = httpPrefix + url
-		}
+		// if !strings.HasPrefix(url, httpPrefix) {
+		// 	url = httpPrefix + url
+		// }
 
 		resp, err := http.Get(url)
 		if err != nil {

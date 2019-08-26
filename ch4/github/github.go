@@ -10,13 +10,16 @@ package github
 
 import "time"
 
+// IssuesURL github
 const IssuesURL = "https://api.github.com/search/issues"
 
+// IssuesSearchResult issues result
 type IssuesSearchResult struct {
 	TotalCount int `json:"total_count"`
 	Items      []*Issue
 }
 
+// Issue is body
 type Issue struct {
 	Number    int
 	HTMLURL   string `json:"html_url"`
@@ -27,6 +30,7 @@ type Issue struct {
 	Body      string    // in Markdown format
 }
 
+// User is user
 type User struct {
 	Login   string
 	HTMLURL string `json:"html_url"`

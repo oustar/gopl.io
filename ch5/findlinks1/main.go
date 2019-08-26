@@ -20,7 +20,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "findlinks1: %v\n", err)
 		os.Exit(1)
 	}
-	for _, link := range visit(nil, doc) {
+	for _, link := range visitEx(nil, doc) {
 		fmt.Println(link)
 	}
 }
@@ -40,6 +40,27 @@ func visit(links []string, n *html.Node) []string {
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		links = visit(links, c)
 	}
+	return links
+}
+
+// visitEx appends to links each link found in n and returns the result.
+// Exercise 5.1
+func visitEx(links []string, n *html.Node) []string {
+	if n == nil {
+		return links
+	}
+
+	if n.Type == html.ElementNode && n.Data == "script" {
+		for _, a := range n.Attr {
+			if a.Key == "src" {
+				links = append(links, a.Val)
+			}
+		}
+	}
+
+	links = visitEx(links, n.FirstChild)
+	links = visitEx(links, n.NextSibling)
+
 	return links
 }
 

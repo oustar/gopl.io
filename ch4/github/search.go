@@ -50,4 +50,41 @@ func SearchIssues(terms []string) (*IssuesSearchResult, error) {
 	return &result, nil
 }
 
+// SearchIssuesEx queries the GitHub issue tracker.
+func SearchIssuesEx(terms []string, sort string, order string) (*IssuesSearchResult, error) {
+	v := url.Values{}
+
+	v.Add("q", strings.Join(terms, " "))
+	v.Add("sort", sort)
+	v.Add("order", order)
+
+	req, err := http.NewRequest("GET", IssuesURL, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.URL.RawQuery = v.Encode()
+
+	req.Header.Set(
+		"Accept", "application/vnd.github.v3.text-match+json")
+
+	fmt.Printf("%s\n", req.URL.String())
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		resp.Body.Close()
+		return nil, fmt.Errorf("search query failed: %s", resp.Status)
+	}
+
+	var result IssuesSearchResult
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		resp.Body.Close()
+		return nil, err
+	}
+	resp.Body.Close()
+	return &result, nil
+}
+
 //!-
