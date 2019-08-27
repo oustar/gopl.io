@@ -21,6 +21,7 @@ func squares() func() int {
 
 func main() {
 	f := squares()
+	fmt.Printf("f type: %T\n", f)
 	fmt.Println(f()) // "1"
 	fmt.Println(f()) // "4"
 	fmt.Println(f()) // "9"
