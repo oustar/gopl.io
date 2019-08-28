@@ -32,11 +32,15 @@ func fetch(url string) (filename string, n int64, err error) {
 	if err != nil {
 		return "", 0, err
 	}
+	defer func(f *os.File) {
+		err = f.Close()
+	}(f)
+
 	n, err = io.Copy(f, resp.Body)
-	// Close file, but prefer error from Copy, if any.
-	if closeErr := f.Close(); err == nil {
-		err = closeErr
+	if err != nil {
+		return "", 0, err
 	}
+
 	return local, n, err
 }
 
@@ -49,6 +53,6 @@ func main() {
 			fmt.Fprintf(os.Stderr, "fetch %s: %v\n", url, err)
 			continue
 		}
-		fmt.Fprintf(os.Stderr, "%s => %s (%d bytes).\n", url, local, n)
+		fmt.Fprintf(os.Stdout, "%s => %s (%d bytes).\n", url, local, n)
 	}
 }
