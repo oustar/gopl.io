@@ -8,8 +8,7 @@ import (
 	"strings"
 )
 
-//!+Check
-
+// Check for value
 func (v Var) Check(vars map[Var]bool) error {
 	vars[v] = true
 	return nil

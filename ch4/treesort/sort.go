@@ -3,27 +3,35 @@
 
 // See page 101.
 
-// Package treesort provides insertion sort using an unbalanced binary tree.
+// Package treesort provides insertion sort using an unbalanced binary Tree.
 package treesort
 
-//!+
-type tree struct {
+import (
+	"bytes"
+	"fmt"
+	"io"
+	"strings"
+)
+
+//Tree is the link tree
+type Tree struct {
 	value       int
-	left, right *tree
+	left, right *Tree
 }
 
 // Sort sorts values in place.
-func Sort(values []int) {
-	var root *tree
+func Sort(values []int) *Tree {
+	var root *Tree
 	for _, v := range values {
 		root = add(root, v)
 	}
 	appendValues(values[:0], root)
+	return root
 }
 
 // appendValues appends the elements of t to values in order
 // and returns the resulting slice.
-func appendValues(values []int, t *tree) []int {
+func appendValues(values []int, t *Tree) []int {
 	if t != nil {
 		values = appendValues(values, t.left)
 		values = append(values, t.value)
@@ -32,10 +40,10 @@ func appendValues(values []int, t *tree) []int {
 	return values
 }
 
-func add(t *tree, value int) *tree {
+func add(t *Tree, value int) *Tree {
 	if t == nil {
-		// Equivalent to return &tree{value: value}.
-		t = new(tree)
+		// Equivalent to return &Tree{value: value}.
+		t = new(Tree)
 		t.value = value
 		return t
 	}
@@ -45,6 +53,19 @@ func add(t *tree, value int) *tree {
 		t.right = add(t.right, value)
 	}
 	return t
+}
+
+func printTree(t *Tree, w io.Writer) {
+	if t != nil {
+		printTree(t.left, w)
+		fmt.Fprintf(w, "%d ", t.value)
+		printTree(t.right, w)
+	}
+}
+func (t *Tree) String() string {
+	var buf bytes.Buffer
+	printTree(t, &buf)
+	return strings.TrimRight(buf.String(), " ")
 }
 
 //!-

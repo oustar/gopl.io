@@ -113,7 +113,7 @@ func parseUnary(lex *lexer) Expr {
 //         | '(' expr ')'
 func parsePrimary(lex *lexer) Expr {
 	switch lex.token {
-	case scanner.Ident:
+	case scanner.Ident:										
 		id := lex.text()
 		lex.next() // consume Ident
 		if lex.token != '(' {

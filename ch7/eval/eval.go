@@ -13,12 +13,12 @@ import (
 
 //!+env
 
+// Env include envirments var
 type Env map[Var]float64
 
 //!-env
 
-//!+Eval1
-
+// Eval is for
 func (v Var) Eval(env Env) float64 {
 	return env[v]
 }

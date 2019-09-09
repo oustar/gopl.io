@@ -29,6 +29,13 @@ func main() {
 		switch tok := tok.(type) {
 		case xml.StartElement:
 			stack = append(stack, tok.Name.Local) // push
+			var listName []string
+			for _, attr := range tok.Attr {
+				listName = append(listName, attr.Name.Local)
+			}
+			if containsAll(listName, os.Args[1:]) {
+				fmt.Printf("%s: %s \n", strings.Join(stack, " "), strings.Join(listName, " "))
+			}
 		case xml.EndElement:
 			stack = stack[:len(stack)-1] // pop
 		case xml.CharData:

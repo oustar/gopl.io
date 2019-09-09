@@ -15,10 +15,12 @@ import (
 
 //!+
 var temp = tempconv.CelsiusFlag("temp", 20.0, "the temperature")
+var ktemp = tempconv.KelvinFlag("ktemp", 10.0, "the kelvin temperature")
 
 func main() {
 	flag.Parse()
 	fmt.Println(*temp)
+	fmt.Println(*ktemp)
 }
 
 //!-
