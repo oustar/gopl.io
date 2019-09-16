@@ -12,6 +12,7 @@ import (
 	"log"
 	"net"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -26,10 +27,44 @@ func echo(c net.Conn, shout string, delay time.Duration) {
 //!+
 func handleConn(c net.Conn) {
 	input := bufio.NewScanner(c)
-	for input.Scan() {
-		go echo(c, input.Text(), 1*time.Second)
+	var wg sync.WaitGroup
+	var ok bool
+
+	retry := make(chan struct{})
+
+	go func() {
+		for input.Scan() {
+			wg.Add(1)
+			go func() {
+				echo(c, input.Text(), 1*time.Second)
+				wg.Done()
+			}()
+			retry <- struct{}{}
+		}
+	}()
+
+	ok = true
+	for {
+
+		select {
+		case <-time.After((10 * time.Second)):
+			ok = false
+			log.Println("退出")
+
+		case <-retry:
+			log.Println("重新计时")
+
+		}
+
+		if !ok {
+			break
+		}
+
 	}
+
+	wg.Wait()
 	// NOTE: ignoring potential errors from input.Err()
+
 	c.Close()
 }
 

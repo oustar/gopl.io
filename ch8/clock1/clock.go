@@ -8,11 +8,14 @@
 package main
 
 import (
+	"flags"
 	"io"
 	"log"
 	"net"
 	"time"
 )
+
+var port = flags.String{}
 
 func main() {
 	listener, err := net.Listen("tcp", "localhost:8000")
