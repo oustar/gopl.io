@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"testing"
 
-	"gopl.io/ch9/bank1"
+	bank "gopl.io/ch9/bank1"
 )
 
 func TestBank(t *testing.T) {
@@ -31,6 +31,29 @@ func TestBank(t *testing.T) {
 	<-done
 
 	if got, want := bank.Balance(), 300; got != want {
+		t.Errorf("Balance = %d, want %d", got, want)
+	}
+}
+
+func TestWithdraw(t *testing.T) {
+	done := make(chan struct{})
+
+	bank.Deposit(300)
+	fmt.Println("=", bank.Balance())
+
+	// Bob
+	var ok bool
+	go func() {
+		ok = bank.Withdraw(100)
+		done <- struct{}{}
+	}()
+
+	<-done
+
+	if !ok {
+		t.Errorf("return value error(want true")
+	}
+	if got, want := bank.Balance(), 200; got != want {
 		t.Errorf("Balance = %d, want %d", got, want)
 	}
 }

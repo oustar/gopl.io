@@ -35,13 +35,13 @@ func incomingURLs() <-chan string {
 	ch := make(chan string)
 	go func() {
 		for _, url := range []string{
-			"https://golang.org",
-			"https://godoc.org",
-			"https://play.golang.org",
+			"https://sina.com.cn",
+			"https://douban.com",
+			"http://ifeng.com",
 			"http://gopl.io",
-			"https://golang.org",
-			"https://godoc.org",
-			"https://play.golang.org",
+			"https://sina.com.cn",
+			"https://douban.com",
+			"http://ifeng.com",
 			"http://gopl.io",
 		} {
 			ch <- url
